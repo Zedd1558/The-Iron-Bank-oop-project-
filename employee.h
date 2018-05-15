@@ -7,15 +7,15 @@ class employee
 {
 protected:
 	int id;
-	char password[30];
+	int pin;
 	char name[30];
 	char phone[30];
 public:
 	employee();
-	employee(int id_, char password_[], char name_[], char phone_[])
+	employee(int id_, int pin_ , char name_[], char phone_[])
 	{
 		id = id_;
-		strcpy_s(password, sizeof password, password_);
+		pin = pin_;
 		strcpy_s(name, sizeof name, name_);
 		strcpy_s(phone, sizeof phone, phone_);
 	}
@@ -23,9 +23,9 @@ public:
 	{
 		return id;
 	}
-	char* get_pass()
+	int  get_pin()
 	{
-		return password;
+		return pin;
 	}
 	char* get_name()
 	{

@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="accounts.h" />
     <ClInclude Include="admin.h" />
+    <ClInclude Include="customer.h" />
     <ClInclude Include="employee.h" />
     <ClInclude Include="id_genA.h" />
     <ClInclude Include="id_genC.h" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="accounts.cpp" />
     <ClCompile Include="admin.cpp" />
+    <ClCompile Include="customer.cpp" />
     <ClCompile Include="employee.cpp" />
     <ClCompile Include="id_genA.cpp" />
     <ClCompile Include="id_genC.cpp" />
