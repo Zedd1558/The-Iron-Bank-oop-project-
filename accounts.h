@@ -20,9 +20,9 @@ public:
 	int get_c_id() { return customer_id; }
 	int get_pin() { return pin; }
 	int get_amount() { return amount; }
-	void deposit(int n);
-	int withdraw(int n);
-	void transfer();
+	void operator += (int n);
+	int operator -= (int n);
+	int transfer(int &r_id,int &amtt);
 	~accounts();
 };
 

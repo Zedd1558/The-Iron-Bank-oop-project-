@@ -1,9 +1,12 @@
 #pragma once
+//_CRT_SECURE_NO_WARNINGS
 #include "stdafx.h"
 #include "customer.h"
 #include "accounts.h"
 #include"customer.h"
+#include "transaction.h"
 #include "admin.h"
+#include<ctime>
 #include "id_genC.h"
 #include "id_genE.h"
 #include "id_genA.h"
@@ -12,7 +15,55 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<Windows.h>
 using namespace std;
+void getTm(timet &timenow)
+{
+	time_t tt;
+	time(&tt);
+	tm TM;
+	localtime_s(&TM,&tt);
+	timenow.year = TM.tm_year + 1900;
+	timenow.month = TM.tm_mon;
+	timenow.day = TM.tm_mday;
+	timenow.hour = TM.tm_hour;
+	timenow.mins = TM.tm_min;
+	timenow.secs = TM.tm_sec;
+	timenow.weekDay = TM.tm_wday;
+}
+void loading1() {
+	system("cls");
+	cout << "\n\n...loading...\n________________\n\n\n\n";
+	for (int i = 0; i<25; i++)
+	{
+
+		//cout << "\n" << "\n";
+
+		cout << ">>";
+		Sleep(50);
+	}
+	system("cls");
+}
+bool checkNumber11(string s)
+{
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] < 48 || s[i]>57) return false;
+	}
+	return true;
+}
+int stooi11(string s)
+{
+	int id = 0;
+	int h = 1;
+	for (int i = (int)(s.size()) - 1; i >= 0; i--)
+	{
+		id += (s[i] * h);
+		h *= 10;
+	}
+	return id;
+}
+
 
 customer::customer()
 {
@@ -29,12 +80,23 @@ void customer::create_account(int c_id,int a_id)
 	outfile.open("idgenA.dat", ios::binary | ios::trunc | ios::out);
 	outfile.write(reinterpret_cast<char *>(&idGenA), sizeof idGenA);
 	outfile.close();
-	cout << " Enter pin : ";
-	int pin;
-	cin >> pin;
+	cout << " Enter pin(4-digit) : ";
+	int pin; string spin;
+	while (1) {
+		cin >> spin;
+		if (checkNumber11(spin)) break;
+		else { cout << "\ninvalid input... Enter again... "; }
+	}
+	pin = stoi(spin);
+
 	cout << " Enter intial deposit :";
-	int amount;
-	cin >> amount;
+	int amount; string samount;
+	while (1) {
+		cin >> samount;
+		if (checkNumber11(samount)) break;
+		else { cout << "\ninvalid input... Enter again... "; }
+	}
+	amount = stooi11(samount);
 	//cout << " account " << idd << " " <<pin<<" " <<c_id << " " << amount << endl;
 	accounts Account(idd, pin, c_id, amount);
 	ofstream outfile1;
@@ -115,13 +177,45 @@ void customer::delete_account(int a_id)
 	system("pause");
 	return;
 }
+bool checkNumber(string s)
+{
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] < 48 || s[i]>57) return false;
+	}
+	return true;
+}
+int stooi(string s)
+{
+	int id = 0;
+	int h = 1;
+	for (int i = (int)s.size() - 1; i >= 0; i--)
+	{
+		id += (s[i] * h);
+		h *= 10;
+	}
+	return id;
+}
 void customer::access_account()
 {
 	//code to access and update account 
 	cout << "_________________________________" << endl;
 	cout << " Enter your Account no : ";
 	int a_id;
-	cin >> a_id;
+	//cin >> a_id;
+	int id_;
+	string sid_;
+	char password[30], c = ' ';
+	//cout << " _____________________________\n";
+	while (1)
+	{
+		//cout << " Enter ID : ";
+		cin >> sid_;
+		if (checkNumber(sid_))break;
+		else { cout << "\ninvalid input... Enter again... : "; }
+	}
+	id_ = stoi(sid_);
+	a_id = id_;
 	accounts Account;
 	fstream file;
 	file.open("accounts.dat", ios::binary | ios::in | ios::out);
@@ -148,11 +242,11 @@ void customer::access_account()
 		}
 	}
 	if (found == false) {
-		cout << " the account was not found " << endl;
+		cout << " the account was not found ..." << endl;
 		system("pause");
 		return;
 	}
-	char password[30], c = ' ';
+//	char password[30], c = ' ';
 	cout << " Enter Pin(4-digit) : ";
 	int i = 0;
 	while (c != 13)
@@ -161,6 +255,7 @@ void customer::access_account()
 		cout << "*";
 		password[i] = c;
 		i++;
+		if (i > 3)break;
 	}
 	password[i] = '\0';
 	int pin_ = atoi(password);
@@ -172,6 +267,7 @@ void customer::access_account()
 		system("pause");
 		return;
 	}
+	loading1();
 	bool q = false;
 	int pos;
 	while (1) {
@@ -181,7 +277,8 @@ void customer::access_account()
 		cout << " 1. Deposit Cash\n";
 		cout << " 2. Withdraw Cash\n";
 		cout << " 3. Transfer Money\n";
-		cout << " 4. Back\n";
+		cout << " 4. Transaction Report\n";
+		cout << " 5. Back\n";
 		cout << "\n == Enter a choice: \t";
 		//cin>>flush;
 
@@ -194,8 +291,27 @@ void customer::access_account()
 		case 1:
 		{   
 			cout << " Enter the amount to be deposited : ";
-			cin >> amt1;
-			Account.deposit(amt1);
+			
+			int iid_;
+			string sid_;
+			
+			while (1)
+			{
+				
+				cin >> sid_;
+				if (checkNumber(sid_))break;
+				else { cout << "\ninvalid input... Enter again... :"; }
+			}
+			iid_ = stoi(sid_);
+			amt1 = iid_;
+			Account+=(amt1);
+			//depositing
+			transaction t;
+			timet timenow;
+			getTm(timenow);
+			char a[] = "deposit";
+			t.set(a_id, -1, amt1, a, timenow);
+			t.show();
 			pos = (-1)*static_cast<int>(sizeof(Account));
 			file.seekp(pos, ios::cur);
 			file.write(reinterpret_cast<char *> (&Account), sizeof(accounts));
@@ -205,27 +321,72 @@ void customer::access_account()
 		}
 		case 2:
 		{	cout << " Enter the amount to be withdrawn : ";
-			cin >> amt2;
-			Account.withdraw(amt2);
+
+			string samt2;
+			
+			while (1)
+			{
+				cin >> samt2;
+				if (checkNumber(samt2))break;
+				else { cout << "\ninvalid input... Enter again... :"; }
+			}
+			amt2 = stoi(samt2);
+			bool kflag = Account-=(amt2);
+			transaction ttt;
+			timet timenow2;
+			getTm(timenow2);
+			char aaa[] = "withdraw";
+			ttt.set(a_id, -1, amt2, aaa, timenow2);
+			//cout << "ok";
+			ttt.show();
 			pos = (-1)*static_cast<int>(sizeof(Account));
 			file.seekp(pos, ios::cur);
 			file.write(reinterpret_cast<char *> (&Account), sizeof(accounts));
-			cout << " Account Updated....." << endl;
+			if( !kflag)cout << " Account Updated....." << endl;
 			system("pause");
 			break;
 		}
 		case 3:
 		{	
 			//cout << "transaction done!" << endl;
-			Account.transfer();
+			int r_id, amtt;
+			int gflag = Account.transfer(r_id,amtt);
+			if (!gflag)
+			{
+				transaction tttt;
+				timet timenow22;
+				getTm(timenow22);
+				char aaaa[] = "transfer";
+				tttt.set(a_id, r_id, amtt, aaaa, timenow22);
+				tttt.show();
+				
+			}
 			pos = (-1)*static_cast<int>(sizeof(Account));
 			file.seekp(pos, ios::cur);
 			file.write(reinterpret_cast<char *> (&Account), sizeof(accounts));
-			cout << " Accounts Updated....." << endl;
+			if(!gflag) cout << " Accounts Updated....." << endl;
 			system("pause");
 			break;
 		}
 		case 4:
+		{
+			cout << "\nTransactions for this Account\n";
+			cout << "=============================";
+			fstream infile0;
+			infile0.open("transactions.dat", ios::binary | ios::in | ios::app);
+			transaction Trans;
+			while (infile0.read(reinterpret_cast<char *>(&Trans), sizeof Trans))
+			{
+
+				if (Trans.getid1() == a_id || Trans.getid2() == a_id)Trans.show();
+
+			}
+			infile0.close();
+			cout << endl << endl;
+			system("pause");
+		}
+			break;
+		case 5:
 			q = true;
 			break;
 
