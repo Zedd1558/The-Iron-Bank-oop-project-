@@ -14,7 +14,8 @@ Team members:
 To run the Project run the file " Iron Bank.sln " / "Iron Bank.vcxproj " in the folder named iron bank 
 
 To run and test the project properly,use these information given below:
- this file contains the info of admins customers employees accounts so that you can test the program
+
+this file contains the info of admins customers employees accounts so that you can test the program
 ---------------------------
 ---------------------------
 
@@ -29,7 +30,7 @@ acc no | owner customer  | balance
 =======
 1804106 1600400 492
 ========
-###############################
+
 
 Customers....
 =======
@@ -43,7 +44,7 @@ cust id | pin num | name
 1600403 10310 faiyaz
 ========
 
-###############################
+
 
 Admins....
 =======
