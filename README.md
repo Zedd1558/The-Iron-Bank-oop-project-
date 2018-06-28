@@ -14,7 +14,7 @@ Team members:
 To run the Project run the file " Iron Bank.sln " / "Iron Bank.vcxproj " in the folder named iron bank 
 
 To run and test the project properly,use these information given below:
-# this file contains the info of admins customers employees accounts so that you can test the program
+ this file contains the info of admins customers employees accounts so that you can test the program
 ---------------------------
 ---------------------------
 
